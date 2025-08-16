@@ -6,6 +6,12 @@ export default function ButtonPage() {
   const { status, connected, click } = useAbly();
 
   const handleClick = () => {
+    if (status.completed) {
+      // Redirect to channel when completed
+      window.open('https://channel.jaryddiamond.com', '_blank');
+      return;
+    }
+    
     if (navigator.vibrate) {
       navigator.vibrate(50); // Haptic feedback
     }
@@ -35,14 +41,19 @@ export default function ButtonPage() {
       <div className="relative">
         <button
           onClick={handleClick}
-          disabled={!connected || status.completed}
+          disabled={!connected}
           className={`
-            relative w-48 h-48 rounded-full text-2xl font-bold select-none
+            relative w-48 h-48 rounded-full font-bold select-none
+            ${status.completed ? 'text-lg px-4' : 'text-2xl'}
             transition-all duration-150 ease-out transform
             ${
               status.completed
-                ? `bg-gradient-to-br from-green-400 to-green-600 text-white cursor-not-allowed
-                 shadow-[0_0_0_4px_rgba(34,197,94,0.2),0_0_0_8px_rgba(34,197,94,0.1),inset_0_3px_0_rgba(255,255,255,0.3),inset_0_-3px_0_rgba(0,0,0,0.2),0_8px_15px_rgba(0,0,0,0.3)]`
+                ? `bg-gradient-to-br from-green-400 to-green-600 text-white cursor-pointer
+                 shadow-[0_0_0_4px_rgba(34,197,94,0.2),0_0_0_8px_rgba(34,197,94,0.1),inset_0_3px_0_rgba(255,255,255,0.3),inset_0_-3px_0_rgba(0,0,0,0.2),0_8px_15px_rgba(0,0,0,0.3)]
+                 hover:shadow-[0_0_0_4px_rgba(34,197,94,0.4),0_0_0_8px_rgba(34,197,94,0.2),inset_0_3px_0_rgba(255,255,255,0.4),inset_0_-3px_0_rgba(0,0,0,0.2),0_10px_20px_rgba(0,0,0,0.4)]
+                 hover:translate-y-[-2px] hover:scale-105
+                 active:shadow-[0_0_0_4px_rgba(34,197,94,0.3),0_0_0_8px_rgba(34,197,94,0.1),inset_0_2px_0_rgba(255,255,255,0.2),inset_0_-2px_0_rgba(0,0,0,0.3),0_6px_12px_rgba(0,0,0,0.3)]
+                 active:translate-y-[2px] active:scale-98`
                 : connected
                 ? `bg-gradient-to-br from-red-400 to-red-600 text-white cursor-pointer
                  shadow-[0_0_0_4px_rgba(239,68,68,0.3),0_0_0_8px_rgba(239,68,68,0.1),inset_0_4px_0_rgba(255,255,255,0.4),inset_0_-4px_0_rgba(0,0,0,0.3),0_12px_20px_rgba(0,0,0,0.4)]
@@ -55,9 +66,9 @@ export default function ButtonPage() {
             }
           `}
         >
-          <span className="relative z-10 drop-shadow-lg">
+          <span className="relative z-10 drop-shadow-lg text-center leading-tight">
             {status.completed
-              ? "DONE!"
+              ? "DONE! CLICK FOR MORE PROJECTS"
               : connected
               ? "CLICK!"
               : "CONNECTING..."}

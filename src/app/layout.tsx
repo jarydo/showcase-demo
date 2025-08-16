@@ -4,7 +4,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Showcase",
-  description: "Me Channel Finale yay!",
+  description: "Me Channel Finale",
 };
 
 export default function RootLayout({
