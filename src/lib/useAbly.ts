@@ -10,6 +10,14 @@ interface Status {
   completed: boolean;
 }
 
+const getApiUrl = (endpoint: string) => {
+  // Use absolute URL in production, relative in development
+  const baseUrl = process.env.NODE_ENV === 'production' 
+    ? 'https://showcase-demo-jaryd-diamonds-projects.vercel.app'
+    : '';
+  return `${baseUrl}/api/${endpoint}`;
+};
+
 export const useAbly = () => {
   const [status, setStatus] = useState<Status>({
     clicks: 0,
@@ -23,7 +31,7 @@ export const useAbly = () => {
   useEffect(() => {
     // Initialize Ably client
     const ablyClient = new Ably.Realtime({
-      authUrl: '/api/ably-auth',
+      authUrl: getApiUrl('ably-auth'),
     });
 
     ablyClient.connection.on('connected', () => {
@@ -45,7 +53,7 @@ export const useAbly = () => {
     setAbly(ablyClient);
 
     // Get initial status
-    fetch('/api/status')
+    fetch(getApiUrl('status'))
       .then(res => res.json())
       .then(data => setStatus(data))
       .catch(console.error);
@@ -57,7 +65,7 @@ export const useAbly = () => {
 
   const click = async () => {
     try {
-      await fetch('/api/click', { method: 'POST' });
+      await fetch(getApiUrl('click'), { method: 'POST' });
     } catch (error) {
       console.error('Click error:', error);
     }
@@ -65,7 +73,7 @@ export const useAbly = () => {
 
   const reset = async () => {
     try {
-      await fetch('/api/reset', { method: 'POST' });
+      await fetch(getApiUrl('reset'), { method: 'POST' });
     } catch (error) {
       console.error('Reset error:', error);
     }
@@ -73,7 +81,7 @@ export const useAbly = () => {
 
   const maxClicks = async () => {
     try {
-      await fetch('/api/max-clicks', { method: 'POST' });
+      await fetch(getApiUrl('max-clicks'), { method: 'POST' });
     } catch (error) {
       console.error('Max clicks error:', error);
     }
