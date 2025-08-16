@@ -11,7 +11,8 @@ export default function HomePage() {
 
   useEffect(() => {
     // Set the button URL when component mounts
-    setButtonUrl(`${window.location.origin}/button`);
+    const basePath = process.env.NODE_ENV === 'production' ? '/showcase' : '';
+    setButtonUrl(`${window.location.origin}${basePath}/button`);
   }, []);
 
   useEffect(() => {
