@@ -11,8 +11,10 @@ interface Status {
 }
 
 const getApiUrl = (endpoint: string) => {
-  // Next.js basePath handles the /showcase prefix automatically
-  return `/api/${endpoint}`;
+  // Only add /showcase prefix when accessed via the rewrite domain
+  const isRewriteDomain = typeof window !== 'undefined' && window.location.hostname === 'channel.jaryddiamond.com';
+  const prefix = isRewriteDomain ? '/showcase' : '';
+  return `${prefix}/api/${endpoint}`;
 };
 
 export const useAbly = () => {

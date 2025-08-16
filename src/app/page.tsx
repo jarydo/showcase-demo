@@ -11,7 +11,8 @@ export default function HomePage() {
 
   useEffect(() => {
     // Set the button URL when component mounts
-    const basePath = process.env.NODE_ENV === 'production' ? '/showcase' : '';
+    const isRewriteDomain = window.location.hostname === 'channel.jaryddiamond.com';
+    const basePath = isRewriteDomain ? '/showcase' : '';
     setButtonUrl(`${window.location.origin}${basePath}/button`);
   }, []);
 

@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  basePath: process.env.NODE_ENV === "production" ? "/showcase" : "",
+  // No basePath - handle routing via environment variables instead
 };
 
 export default nextConfig;
