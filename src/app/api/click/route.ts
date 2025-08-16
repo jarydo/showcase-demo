@@ -3,7 +3,7 @@ import { getAblyRest, incrementClick, CHANNEL_NAME } from '@/lib/ably';
 
 export async function POST() {
   try {
-    const status = incrementClick();
+    const status = await incrementClick();
     const ably = getAblyRest();
     
     // Publish the updated status to all connected clients

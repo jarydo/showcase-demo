@@ -3,7 +3,7 @@ import { getAblyRest, resetClicks, CHANNEL_NAME } from '@/lib/ably';
 
 export async function POST() {
   try {
-    const status = resetClicks();
+    const status = await resetClicks();
     const ably = getAblyRest();
     
     // Publish the reset status to all connected clients

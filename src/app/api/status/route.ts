@@ -3,7 +3,7 @@ import { getStatus } from '@/lib/ably';
 
 export async function GET() {
   try {
-    const status = getStatus();
+    const status = await getStatus();
     return NextResponse.json(status);
   } catch (error) {
     console.error('Status error:', error);

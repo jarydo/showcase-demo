@@ -1,4 +1,5 @@
 import Ably from 'ably';
+import { createClient } from 'redis';
 
 // Server-side Ably client for publishing messages
 let ably: Ably.Rest | null = null;
@@ -12,32 +13,70 @@ export const getAblyRest = () => {
   return ably;
 };
 
-// Shared state - in production, you'd want to use a database or Redis
-let clickCount = 0;
-const maxClicks = 5000;
+// Redis client singleton
+let redis: ReturnType<typeof createClient> | null = null;
 
-export const getStatus = () => ({
-  clicks: clickCount,
-  maxClicks,
-  progress: (clickCount / maxClicks) * 100,
-  completed: clickCount >= maxClicks,
-});
-
-export const incrementClick = () => {
-  if (clickCount < maxClicks) {
-    clickCount++;
+const getRedisClient = async () => {
+  if (!redis) {
+    redis = createClient({
+      url: process.env.REDIS_URL,
+    });
+    
+    redis.on('error', (err) => console.error('Redis Client Error', err));
+    
+    if (!redis.isOpen) {
+      await redis.connect();
+    }
   }
-  return getStatus();
+  return redis;
 };
 
-export const resetClicks = () => {
-  clickCount = 0;
-  return getStatus();
+const maxClicks = 5000;
+const CLICK_COUNT_KEY = 'mosaic-click-count';
+
+export const getStatus = async () => {
+  const client = await getRedisClient();
+  const clickCountStr = await client.get(CLICK_COUNT_KEY);
+  const clickCount = clickCountStr ? parseInt(clickCountStr, 10) : 0;
+  
+  return {
+    clicks: clickCount,
+    maxClicks,
+    progress: (clickCount / maxClicks) * 100,
+    completed: clickCount >= maxClicks,
+  };
 };
 
-export const maxOutClicks = () => {
-  clickCount = maxClicks;
-  return getStatus();
+export const incrementClick = async () => {
+  const client = await getRedisClient();
+  
+  // Use atomic increment to prevent race conditions
+  const newCount = await client.incr(CLICK_COUNT_KEY);
+  
+  // Ensure we don't go over maxClicks
+  if (newCount > maxClicks) {
+    await client.set(CLICK_COUNT_KEY, maxClicks.toString());
+    return await getStatus();
+  }
+  
+  return {
+    clicks: newCount,
+    maxClicks,
+    progress: (newCount / maxClicks) * 100,
+    completed: newCount >= maxClicks,
+  };
+};
+
+export const resetClicks = async () => {
+  const client = await getRedisClient();
+  await client.set(CLICK_COUNT_KEY, '0');
+  return await getStatus();
+};
+
+export const maxOutClicks = async () => {
+  const client = await getRedisClient();
+  await client.set(CLICK_COUNT_KEY, maxClicks.toString());
+  return await getStatus();
 };
 
 export const CHANNEL_NAME = 'mosaic-demo';

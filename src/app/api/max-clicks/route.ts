@@ -3,7 +3,7 @@ import { getAblyRest, maxOutClicks, CHANNEL_NAME } from '@/lib/ably';
 
 export async function POST() {
   try {
-    const status = maxOutClicks();
+    const status = await maxOutClicks();
     const ably = getAblyRest();
     
     // Publish the maxed out status to all connected clients
