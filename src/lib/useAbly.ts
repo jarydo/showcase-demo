@@ -11,8 +11,8 @@ interface Status {
 }
 
 const getApiUrl = (endpoint: string) => {
-  const prefix = process.env.NODE_ENV === "production" ? "/showcase" : "";
-  return `${prefix}/api/${endpoint}`;
+  // Next.js basePath handles the /showcase prefix automatically
+  return `/api/${endpoint}`;
 };
 
 export const useAbly = () => {
