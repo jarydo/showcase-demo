@@ -11,8 +11,8 @@ interface Status {
 }
 
 const getApiUrl = (endpoint: string) => {
-  // Always use relative URLs so they work with Vercel rewrites
-  return `/api/${endpoint}`;
+  const prefix = process.env.NODE_ENV === "production" ? "/showcase" : "";
+  return `${prefix}/api/${endpoint}`;
 };
 
 export const useAbly = () => {
@@ -28,31 +28,31 @@ export const useAbly = () => {
   useEffect(() => {
     // Initialize Ably client
     const ablyClient = new Ably.Realtime({
-      authUrl: getApiUrl('ably-auth'),
+      authUrl: getApiUrl("ably-auth"),
     });
 
-    ablyClient.connection.on('connected', () => {
-      console.log('Connected to Ably');
+    ablyClient.connection.on("connected", () => {
+      console.log("Connected to Ably");
       setConnected(true);
     });
 
-    ablyClient.connection.on('disconnected', () => {
-      console.log('Disconnected from Ably');
+    ablyClient.connection.on("disconnected", () => {
+      console.log("Disconnected from Ably");
       setConnected(false);
     });
 
     // Subscribe to status updates
-    const channel = ablyClient.channels.get('mosaic-demo');
-    channel.subscribe('status-update', (message) => {
+    const channel = ablyClient.channels.get("mosaic-demo");
+    channel.subscribe("status-update", (message) => {
       setStatus(message.data);
     });
 
     setAbly(ablyClient);
 
     // Get initial status
-    fetch(getApiUrl('status'))
-      .then(res => res.json())
-      .then(data => setStatus(data))
+    fetch(getApiUrl("status"))
+      .then((res) => res.json())
+      .then((data) => setStatus(data))
       .catch(console.error);
 
     return () => {
@@ -62,25 +62,25 @@ export const useAbly = () => {
 
   const click = async () => {
     try {
-      await fetch(getApiUrl('click'), { method: 'POST' });
+      await fetch(getApiUrl("click"), { method: "POST" });
     } catch (error) {
-      console.error('Click error:', error);
+      console.error("Click error:", error);
     }
   };
 
   const reset = async () => {
     try {
-      await fetch(getApiUrl('reset'), { method: 'POST' });
+      await fetch(getApiUrl("reset"), { method: "POST" });
     } catch (error) {
-      console.error('Reset error:', error);
+      console.error("Reset error:", error);
     }
   };
 
   const maxClicks = async () => {
     try {
-      await fetch(getApiUrl('max-clicks'), { method: 'POST' });
+      await fetch(getApiUrl("max-clicks"), { method: "POST" });
     } catch (error) {
-      console.error('Max clicks error:', error);
+      console.error("Max clicks error:", error);
     }
   };
 
