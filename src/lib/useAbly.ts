@@ -11,11 +11,8 @@ interface Status {
 }
 
 const getApiUrl = (endpoint: string) => {
-  // Use absolute URL in production, relative in development
-  const baseUrl = process.env.NODE_ENV === 'production' 
-    ? 'https://showcase-demo-jaryd-diamonds-projects.vercel.app'
-    : '';
-  return `${baseUrl}/api/${endpoint}`;
+  // Always use relative URLs so they work with Vercel rewrites
+  return `/api/${endpoint}`;
 };
 
 export const useAbly = () => {
