@@ -1,7 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // No basePath - handle routing via environment variables instead
+  assetPrefix: process.env.NODE_ENV === 'production' && process.env.VERCEL_URL 
+    ? `https://${process.env.VERCEL_URL}/showcase`
+    : undefined,
+  trailingSlash: false,
 };
 
 export default nextConfig;
