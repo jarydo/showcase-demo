@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import { getAblyRest } from '@/lib/ably';
 
+export const runtime = 'nodejs';
+export const maxDuration = 10;
+
 export async function GET() {
   try {
     const ably = getAblyRest();

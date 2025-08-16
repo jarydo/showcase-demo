@@ -20,9 +20,15 @@ const getRedisClient = async () => {
   if (!redis) {
     redis = createClient({
       url: process.env.REDIS_URL,
+      socket: {
+        connectTimeout: 5000,
+      },
     });
     
     redis.on('error', (err) => console.error('Redis Client Error', err));
+    redis.on('connect', () => console.log('Redis connected'));
+    redis.on('reconnecting', () => console.log('Redis reconnecting'));
+    redis.on('ready', () => console.log('Redis ready'));
     
     if (!redis.isOpen) {
       await redis.connect();

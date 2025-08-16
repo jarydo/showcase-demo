@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import { getStatus } from '@/lib/ably';
 
+export const runtime = 'nodejs';
+export const maxDuration = 10;
+
 export async function GET() {
   try {
     const status = await getStatus();
