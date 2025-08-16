@@ -1,12 +1,12 @@
 "use client";
 
-import { useSocket } from "../lib/useSocket";
+import { useAbly } from "../lib/useAbly";
 import { useEffect, useState } from "react";
 import QRCodeComponent from "../components/QRCode";
 import ProgressiveMosaic from "../components/ProgressiveMosaic";
 
 export default function HomePage() {
-  const { status, connected, reset, maxClicks } = useSocket();
+  const { status, connected, reset, maxClicks } = useAbly();
   const [buttonUrl, setButtonUrl] = useState("");
 
   useEffect(() => {

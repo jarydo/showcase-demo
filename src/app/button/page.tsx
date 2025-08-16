@@ -1,9 +1,9 @@
 "use client";
 
-import { useSocket } from "../../lib/useSocket";
+import { useAbly } from "../../lib/useAbly";
 
 export default function ButtonPage() {
-  const { status, connected, click } = useSocket();
+  const { status, connected, click } = useAbly();
 
   const handleClick = () => {
     if (navigator.vibrate) {
