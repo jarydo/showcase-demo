@@ -8,10 +8,10 @@ export default function ButtonPage() {
   const handleClick = () => {
     if (status.completed) {
       // Redirect to channel when completed
-      window.open('https://channel.jaryddiamond.com', '_blank');
+      window.open("https://channel.jaryddiamond.com", "_blank");
       return;
     }
-    
+
     if (navigator.vibrate) {
       navigator.vibrate(50); // Haptic feedback
     }
@@ -19,7 +19,10 @@ export default function ButtonPage() {
   };
 
   return (
-    <div className="min-h-screen w-screen overflow-hidden flex flex-col items-center justify-center gap-4" style={{ minHeight: '-webkit-fill-available' }}>
+    <div
+      className="min-h-screen w-screen overflow-hidden flex flex-col items-center justify-center gap-4"
+      style={{ minHeight: "-webkit-fill-available" }}
+    >
       <h2 className="text-3xl font-bold mb-8">Complete the mosaic!</h2>
 
       {/* Progress Display */}
@@ -44,7 +47,7 @@ export default function ButtonPage() {
           disabled={!connected}
           className={`
             relative w-48 h-48 rounded-full font-bold select-none
-            ${status.completed ? 'text-lg px-4' : 'text-2xl'}
+            ${status.completed ? "text-lg px-4" : "text-2xl"}
             transition-all duration-150 ease-out transform
             ${
               status.completed
@@ -66,7 +69,7 @@ export default function ButtonPage() {
             }
           `}
         >
-          <span className="relative z-10 drop-shadow-lg text-center leading-tight">
+          <span className="relative z-10 drop-shadow-lg text-center leading-tight select-none">
             {status.completed
               ? "DONE! CLICK FOR MORE PROJECTS"
               : connected
