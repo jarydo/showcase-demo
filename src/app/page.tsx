@@ -11,8 +11,9 @@ export default function HomePage() {
 
   useEffect(() => {
     // Set the button URL when component mounts
-    const isRewriteDomain = window.location.hostname === 'channel.jaryddiamond.com';
-    const basePath = isRewriteDomain ? '/showcase' : '';
+    const isRewriteDomain =
+      window.location.hostname === "channel.jaryddiamond.com";
+    const basePath = isRewriteDomain ? "/showcase" : "";
     setButtonUrl(`${window.location.origin}${basePath}/button`);
   }, []);
 
@@ -84,7 +85,9 @@ export default function HomePage() {
       </div>
 
       {/* Reset Instructions - Bottom Center */}
-      <div className="text-xs text-gray-400">Press R to reset demo</div>
+      <div className="text-xs text-gray-400">
+        Press R to reset, Press F to reveal
+      </div>
     </div>
   );
 }
